@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/board"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAF0E3">
+
+    <ImageView
+        android:id="@+id/img_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_huitui"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:src="@drawable/ic_huitui"
+        app:layout_constraintBottom_toBottomOf="@+id/img_set"
+        app:layout_constraintEnd_toStartOf="@+id/img_qianj"
+        app:layout_constraintTop_toTopOf="@+id/img_set" />
+
+    <ImageView
+        android:id="@+id/img_qianj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:src="@drawable/ic_qianj"
+        app:layout_constraintBottom_toBottomOf="@+id/img_huitui"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/img_huitui" />
+   <androidx.cardview.widget.CardView
+       android:id="@+id/car_mirror"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:cardCornerRadius="8dp"
+       android:visibility="gone"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/img_huitui">
+       <ImageView
+           android:id="@+id/img_mirror"
+           android:layout_width="142dp"
+           android:layout_height="114dp"
+           android:src="@drawable/ic_mirrir_1" />
+    </androidx.cardview.widget.CardView>
+
+    <FrameLayout
+        android:id="@+id/fl_board"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_tool"
+        app:layout_constraintTop_toBottomOf="@+id/car_mirror" />
+
+    <LinearLayout
+        android:id="@+id/ll_tool"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#C6B6CF"
+        android:gravity="center"
+        android:paddingVertical="16dp"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/ll_menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="12dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/img_palette"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_palette_2" />
+        <ImageView
+            android:id="@+id/img_huabi"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_huabi_2" />
+
+        <ImageView
+            android:id="@+id/img_xiangpica"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_xiangpica_2" />
+        <ImageView
+            android:id="@+id/img_xiazai"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_xiazai_2" />
+        <ImageView
+            android:id="@+id/img_wancheng"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_wancheng_2" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
