@@ -114,6 +114,7 @@ class BoardLandscapeActivity : AppCompatActivity() {
     private fun setupClickListeners() {
         // 调色板
         binding.imgPalette.setOnClickListener {
+            binding.llTool.isVisible = true
             selectedTool = SelectedTool.PALETTE
             updateToolIcons()
             showColorPalette()

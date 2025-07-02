@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- 在 AndroidManifest.xml 文件的 <manifest> 标签内添加以下权限 -->
 
     <!-- 写入外部存储权限 (Android 10 以下需要) -->
@@ -25,6 +25,7 @@
     </queries>
     <application
         android:allowBackup="true"
+        android:name=".App"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -50,6 +51,14 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.MONKEY" />
+
+            </intent-filter>
         </activity>
 
         <activity android:name=".BoardVerticalActivity"
@@ -79,6 +88,17 @@
             android:exported="false"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".PoplActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DialogActivity"
+            android:theme="@style/TranBottomDialog"
+            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>

@@ -123,29 +123,6 @@
 
             </ScrollView>
 
-            <!-- 保留原有的 SeekBar 以防需要 -->
-<!--            <SeekBar-->
-<!--                android:id="@+id/seekbar_brush"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:layout_marginHorizontal="6dp"-->
-<!--                android:layout_marginVertical="16dp"-->
-<!--                android:max="50"-->
-<!--                android:progress="10"-->
-<!--                android:visibility="gone" />-->
-
-<!--            <SeekBar-->
-<!--                android:id="@+id/seekbar_eraser"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:layout_marginHorizontal="6dp"-->
-<!--                android:layout_marginVertical="16dp"-->
-<!--                android:max="100"-->
-<!--                android:progress="20"-->
-<!--                android:visibility="gone" />-->
-
         </LinearLayout>
 
         <FrameLayout

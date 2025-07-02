@@ -7,18 +7,64 @@
     android:background="@drawable/bg_gallery">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+
+    <com.completely.silent.drawingboard.main.NestedScrollableContainer
+        android:id="@+id/viewPagerContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
-        android:clipToPadding="false"
+        app:layout_constraintBottom_toTopOf="@+id/dotsIndicator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerApps"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.completely.silent.drawingboard.main.NestedScrollableContainer>
+    <FrameLayout
+        android:id="@+id/icon_icon"
+        android:layout_width="76dp"
+        android:layout_height="50dp"
+        android:padding="6dp"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/bg_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"/>
+    </FrameLayout>
+    <LinearLayout
+        android:id="@+id/dotsIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/fixedAppsContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/fixedAppsContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_app" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- 这里会动态添加5个常用应用 -->
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"

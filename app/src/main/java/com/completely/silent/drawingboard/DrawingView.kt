@@ -32,6 +32,9 @@ class DrawingView @JvmOverloads constructor(
     // 添加标记来避免重复初始化
     private var isInitialized = false
 
+    // 添加标志来跟踪是否有绘制内容
+    private var hasDrawnContent = false
+
     data class PathData(
         val path: Path,
         val paint: Paint,
@@ -80,6 +83,7 @@ class DrawingView @JvmOverloads constructor(
 
         isInitialized = true
     }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         canvasBitmap?.let { bitmap ->
@@ -120,6 +124,9 @@ class DrawingView @JvmOverloads constructor(
                 pathList.add(PathData(Path(drawPath), newPaint, currentTool))
                 undoList.clear()
                 drawPath.reset()
+
+                // 标记为已绘制内容
+                hasDrawnContent = true
             }
             else -> return false
         }
@@ -149,6 +156,8 @@ class DrawingView @JvmOverloads constructor(
         if (pathList.isNotEmpty()) {
             undoList.add(pathList.removeAt(pathList.size - 1))
             redrawCanvas()
+            // 更新绘制状态
+            updateDrawnContentStatus()
         }
     }
 
@@ -156,6 +165,8 @@ class DrawingView @JvmOverloads constructor(
         if (undoList.isNotEmpty()) {
             pathList.add(undoList.removeAt(undoList.size - 1))
             redrawCanvas()
+            // 更新绘制状态
+            updateDrawnContentStatus()
         }
     }
 
@@ -165,6 +176,23 @@ class DrawingView @JvmOverloads constructor(
             drawCanvas?.drawPath(pathData.path, pathData.paint)
         }
         invalidate()
+    }
+
+    private fun updateDrawnContentStatus() {
+        hasDrawnContent = pathList.isNotEmpty()
+    }
+
+    // 新增方法：检查是否有绘制内容
+    fun hasDrawnContent(): Boolean {
+        return hasDrawnContent
+    }
+
+    // 新增方法：清空绘制内容
+    fun clearDrawing() {
+        pathList.clear()
+        undoList.clear()
+        hasDrawnContent = false
+        redrawCanvas()
     }
 
     fun getBitmap(): Bitmap {

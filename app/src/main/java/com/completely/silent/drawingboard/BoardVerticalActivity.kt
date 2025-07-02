@@ -105,6 +105,7 @@ class BoardVerticalActivity : AppCompatActivity() {
         // 调色板
         binding.imgPalette.setOnClickListener {
             selectedTool = SelectedTool.PALETTE
+            binding.llTool.isVisible =true
             updateToolIcons()
             showColorPalette()
         }

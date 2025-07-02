@@ -14,5 +14,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
+    <include
+        android:id="@+id/in_dialog_1"
+        layout="@layout/quan_main_1" />
+    <include
+        android:id="@+id/in_dialog_2"
+        layout="@layout/quan_main_2" />
+<!--    <include-->
+<!--        android:id="@+id/in_dialog_3"-->
+<!--        layout="@layout/quan_main_3" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

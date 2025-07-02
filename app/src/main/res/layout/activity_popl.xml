@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/popl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gallery">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textColor="#FF614479"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/img_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/img_back" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/atv_share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="23dp"
+            android:background="@drawable/bg_menu"
+            android:drawableStart="@drawable/icon_sh"
+            android:drawableEnd="@drawable/icon_right"
+            android:drawablePadding="6dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="22dp"
+            android:text="Share with Friends"
+            android:textColor="#FF333333"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/img_back" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/atv_plo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_menu"
+            android:drawableStart="@drawable/icon_popl"
+            android:drawableEnd="@drawable/icon_right"
+            android:drawablePadding="6dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="22dp"
+            android:text="Privacy policy"
+            android:textColor="#FF333333"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/atv_share" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

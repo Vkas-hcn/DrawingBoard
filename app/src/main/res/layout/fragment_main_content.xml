@@ -29,6 +29,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_jump"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_s_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_rectangle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_ellipse"
+            app:layout_constraintStart_toStartOf="@+id/img_s_1"
+            app:layout_constraintBottom_toBottomOf="@+id/img_s_1"
+            app:layout_constraintTop_toTopOf="@+id/img_s_1" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-12dp"
+            android:layout_marginTop="-10dp"
+            android:src="@drawable/ic_hand"
+            app:layout_constraintStart_toStartOf="@+id/img_s_1"
+            app:layout_constraintTop_toBottomOf="@+id/img_s_1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_start"
         android:layout_width="220dp"
