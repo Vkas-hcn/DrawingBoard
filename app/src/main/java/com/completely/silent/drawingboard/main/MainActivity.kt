@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity(), ViewPager2Provider {
             binding.inDialog2.quanDialog2.isVisible = false
         }
         homeButtonCallbackId = ReliableHomeButtonDetection.registerHomeButtonCallback {
-            // Home按键被按下时执行的逻辑
             scrollToPage(1)
         }
     }
@@ -103,17 +102,13 @@ class MainActivity : AppCompatActivity(), ViewPager2Provider {
         binding.viewPager.adapter = adapter
         binding.viewPager.currentItem = 0
 
-        // 优化ViewPager的触摸处理
         binding.viewPager.apply {
-            // 允许用户滑动切换页面
             isUserInputEnabled = true
 
-            // 添加页面变化监听
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
 
-                    // 当在应用列表页面时，确保可以正常使用嵌套滑动
                     when (position) {
                         0 -> {
                         }
@@ -160,7 +155,6 @@ class MainActivity : AppCompatActivity(), ViewPager2Provider {
 
 
     override fun onDestroy() {
-        // 取消注册回调
         if (homeButtonCallbackId >= 0) {
             ReliableHomeButtonDetection.unregisterHomeButtonCallback(homeButtonCallbackId)
         }

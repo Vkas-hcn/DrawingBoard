@@ -141,7 +141,13 @@ class BoardVerticalActivity : AppCompatActivity() {
             selectedTool = SelectedTool.NONE
             updateToolIcons()
             binding.llTool.removeAllViews() // 清空工具栏
-            checkPermissionAndSave()
+
+            // 检查是否有绘制内容
+            if (drawingView.hasDrawnContent()) {
+                checkPermissionAndSave()
+            } else {
+                Toast.makeText(this, "Please draw something before saving", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // 完成
@@ -149,7 +155,13 @@ class BoardVerticalActivity : AppCompatActivity() {
             selectedTool = SelectedTool.NONE
             updateToolIcons()
             binding.llTool.removeAllViews() // 清空工具栏
-            saveDrawingPermanently()
+
+            // 检查是否有绘制内容
+            if (drawingView.hasDrawnContent()) {
+                saveDrawingPermanently()
+            } else {
+                Toast.makeText(this, "Please draw something before saving", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // 撤销
@@ -496,16 +508,28 @@ class BoardVerticalActivity : AppCompatActivity() {
     }
 
     private fun showBackConfirmDialog() {
+        // 只有在有绘制内容时才显示确认对话框
+        if (drawingView.hasDrawnContent()) {
             AlertDialog.Builder(this)
                 .setTitle("Tip")
                 .setMessage("Save your artwork before exiting?")
-                .setPositiveButton("Back") { _, _ ->
+                .setPositiveButton("Save and Exit") { _, _ ->
+                    if (drawingView.hasDrawnContent()) {
+                        saveDrawingPermanently()
+                    } else {
+                        finish()
+                    }
+                }
+                .setNegativeButton("Exit without saving") { _, _ ->
                     finish()
                 }
-                .setNegativeButton("Cancel", null)
+                .setNeutralButton("Cancel", null)
                 .show()
+        } else {
+            // 没有绘制内容时直接退出
+            finish()
+        }
     }
-
 
     private fun Int.dpToPx(): Int {
         return (this * resources.displayMetrics.density).toInt()

@@ -35,7 +35,6 @@ class DrawingDetailActivity : AppCompatActivity() {
     private var filename: String? = null
     private var currentBitmap: Bitmap? = null
 
-    // 权限请求
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -46,7 +45,6 @@ class DrawingDetailActivity : AppCompatActivity() {
         }
     }
 
-    // 设置页面跳转
     private val settingsLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { }
@@ -62,10 +60,8 @@ class DrawingDetailActivity : AppCompatActivity() {
             insets
         }
 
-        // 隐藏ActionBar
         supportActionBar?.hide()
 
-        // 初始化
         historyManager = DrawingHistoryManager(this)
         filename = intent.getStringExtra("filename")
 
@@ -74,7 +70,6 @@ class DrawingDetailActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        // 返回按钮
         binding.btnBack.setOnClickListener {
             finish()
         }

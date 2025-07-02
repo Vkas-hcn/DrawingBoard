@@ -90,7 +90,6 @@ class AppListFragment : Fragment() {
             }
         })
 
-        // 使用包装容器处理滑动冲突，简化处理逻辑
         setupTouchConflictResolution()
     }
     private fun setupTouchConflictResolution() {
@@ -98,7 +97,6 @@ class AppListFragment : Fragment() {
             // 设置预加载页面数量
             offscreenPageLimit = 1
 
-            // 由于使用了NestedScrollableContainer，这里只需要简单的边界处理
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)

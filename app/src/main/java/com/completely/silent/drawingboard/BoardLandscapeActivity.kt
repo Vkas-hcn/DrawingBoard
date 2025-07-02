@@ -48,15 +48,15 @@ class BoardLandscapeActivity : AppCompatActivity() {
     private var currentBrushSize = 10f
     private var currentEraserSize = 20f
 
-    // 自定义垂直 SeekBar
     private var verticalBrushSeekBar: VerticalSeekBar? = null
     private var verticalEraserSeekBar: VerticalSeekBar? = null
+
+    private var hideToolsRunnable: Runnable? = null
 
     enum class Tool {
         BRUSH, ERASER
     }
 
-    // 权限请求
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -67,7 +67,6 @@ class BoardLandscapeActivity : AppCompatActivity() {
         }
     }
 
-    // 设置页面跳转
     private val settingsLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { }
@@ -88,12 +87,8 @@ class BoardLandscapeActivity : AppCompatActivity() {
 
         setupDrawingView()
         setupClickListeners()
-        setupSeekBarListeners() // 添加这行
-
-        // 设置初始状态
         selectedTool = SelectedTool.BRUSH
-        updateToolIcons() // 初始化图标状态
-
+        updateToolIcons()
         onBackPressedDispatcher.addCallback {
             showBackConfirmDialog()
         }
@@ -101,7 +96,7 @@ class BoardLandscapeActivity : AppCompatActivity() {
 
     private fun setupDrawingView() {
         drawingView = DrawingView(this)
-        drawingView.setBrushSize(currentBrushSize) // 设置初始画笔大小
+        drawingView.setBrushSize(currentBrushSize)
         binding.flBoard.addView(drawingView)
         if(DataTool.mirrorImage!=0){
             binding.carMirror.isVisible =true
@@ -112,92 +107,93 @@ class BoardLandscapeActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        // 调色板
         binding.imgPalette.setOnClickListener {
+            cancelHideToolsTask()
+
             binding.llTool.isVisible = true
             selectedTool = SelectedTool.PALETTE
             updateToolIcons()
             showColorPalette()
         }
 
-        // 画笔
         binding.imgHuabi.setOnClickListener {
+            cancelHideToolsTask()
+
             binding.llTool.isVisible = true
             currentTool = Tool.BRUSH
             selectedTool = SelectedTool.BRUSH
             updateToolIcons()
             drawingView.setBrushSize(currentBrushSize)
-            // 延迟执行，避免布局变化影响DrawingView
             post {
                 showBrushSizeSelector()
             }
         }
 
-        // 橡皮擦
         binding.imgXiangpica.setOnClickListener {
+            cancelHideToolsTask()
+
             binding.llTool.isVisible = true
             currentTool = Tool.ERASER
             selectedTool = SelectedTool.ERASER
             updateToolIcons()
             drawingView.setEraserSize(currentEraserSize)
-            // 延迟执行，避免布局变化影响DrawingView
             post {
                 showEraserSizeSelector()
             }
         }
 
-        // 下载
         binding.imgXiazai.setOnClickListener {
+            cancelHideToolsTask()
             selectedTool = SelectedTool.NONE
             updateToolIcons()
-            binding.llTool.removeAllViews() // 清空工具栏
-            checkPermissionAndSave()
+            hideAllTools()
+            if (drawingView.hasDrawnContent()) {
+                checkPermissionAndSave()
+            } else {
+                Toast.makeText(this, "Please draw something before saving", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        // 完成
         binding.imgWancheng.setOnClickListener {
+            cancelHideToolsTask()
             selectedTool = SelectedTool.NONE
             updateToolIcons()
-            binding.llTool.removeAllViews() // 清空工具栏
-            saveDrawingPermanently()
+            hideAllTools()
+            if (drawingView.hasDrawnContent()) {
+                saveDrawingPermanently()
+            } else {
+                Toast.makeText(this, "Please draw something before saving", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        // 撤销
         binding.imgHuitui.setOnClickListener {
             drawingView.undo()
         }
 
-        // 重做
         binding.imgQianj.setOnClickListener {
             drawingView.redo()
         }
 
-        // 返回
         binding.imgSet.setOnClickListener {
             showBackConfirmDialog()
         }
     }
 
-    // 添加一个post方法来延迟执行
     private fun post(action: () -> Unit) {
         binding.root.post(action)
     }
 
-    // 当前选中的工具类型
     enum class SelectedTool {
         PALETTE, BRUSH, ERASER, NONE
     }
 
     private var selectedTool = SelectedTool.BRUSH
 
-    // 更新工具图标状态
     private fun updateToolIcons() {
-        // 重置所有图标为未选中状态
         binding.imgPalette.setImageResource(R.drawable.ic_palette_2)
         binding.imgHuabi.setImageResource(R.drawable.ic_huabi_2)
         binding.imgXiangpica.setImageResource(R.drawable.ic_xiangpica_2)
 
-        // 根据当前选中的工具设置对应图标为选中状态
         when (selectedTool) {
             SelectedTool.PALETTE -> {
                 binding.imgPalette.setImageResource(R.drawable.ic_palette_1)
@@ -209,67 +205,27 @@ class BoardLandscapeActivity : AppCompatActivity() {
                 binding.imgXiangpica.setImageResource(R.drawable.ic_xiangpica_1)
             }
             SelectedTool.NONE -> {
-                // 所有图标都是未选中状态，已在上面设置
             }
         }
     }
 
-    // 修改后的 setupSeekBarListeners 方法
-    private fun setupSeekBarListeners() {
-        // 原来的 SeekBar 监听器（如果您仍在使用原来的 SeekBar）
-//        binding.seekbarBrush.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-//            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-//                if (fromUser) {
-//                    currentBrushSize = (progress + 1).toFloat()
-//                    drawingView.setBrushSize(currentBrushSize)
-//                }
-//            }
-//            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-//            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-//                // 延迟隐藏工具栏
-//                binding.root.postDelayed({
-//                    hideAllTools()
-//                }, 1500)
-//            }
-//        })
-//
-//        // 橡皮擦大小滑动器
-//        binding.seekbarEraser.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-//            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-//                if (fromUser) {
-//                    currentEraserSize = (progress + 5).toFloat()
-//                    drawingView.setEraserSize(currentEraserSize)
-//                }
-//            }
-//            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-//            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-//                // 延迟隐藏工具栏
-//                binding.root.postDelayed({
-//                    hideAllTools()
-//                }, 1500)
-//            }
-//        })
+    private fun cancelHideToolsTask() {
+        hideToolsRunnable?.let {
+            binding.root.removeCallbacks(it)
+            hideToolsRunnable = null
+        }
     }
 
-    // 隐藏所有工具
     private fun hideAllTools() {
         binding.llTool.visibility = View.GONE
         binding.svColorPalette.visibility = View.GONE
-//        binding.seekbarBrush.visibility = View.GONE
-//        binding.seekbarEraser.visibility = View.GONE
-
-        // 清理自定义 SeekBar
         verticalBrushSeekBar = null
         verticalEraserSeekBar = null
     }
 
-    // 修改后的 showBrushSizeSelector 方法 - 使用自定义垂直 SeekBar
     private fun showBrushSizeSelector() {
         hideAllTools()
         binding.llTool.visibility = View.VISIBLE
-        binding.llTool.removeAllViews()
-
-        // 创建自定义垂直 SeekBar
         verticalBrushSeekBar = VerticalSeekBar(this).apply {
             setMin(1)
             setMax(50)
@@ -282,13 +238,18 @@ class BoardLandscapeActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onStartTrackingTouch(seekBar: VerticalSeekBar) {}
+                override fun onStartTrackingTouch(seekBar: VerticalSeekBar) {
+                    // 开始触摸时取消之前的延迟隐藏任务
+                    cancelHideToolsTask()
+                }
 
                 override fun onStopTrackingTouch(seekBar: VerticalSeekBar) {
-                    // 延迟隐藏工具栏
-                    binding.root.postDelayed({
+                    cancelHideToolsTask()
+                    hideToolsRunnable = Runnable {
                         hideAllTools()
-                    }, 1500)
+                        hideToolsRunnable = null
+                    }
+                    binding.root.postDelayed(hideToolsRunnable!!, 1500)
                 }
             })
         }
@@ -299,13 +260,10 @@ class BoardLandscapeActivity : AppCompatActivity() {
         ))
     }
 
-    // 修改后的 showEraserSizeSelector 方法 - 使用自定义垂直 SeekBar
     private fun showEraserSizeSelector() {
         hideAllTools()
         binding.llTool.visibility = View.VISIBLE
-        binding.llTool.removeAllViews()
 
-        // 创建自定义垂直 SeekBar
         verticalEraserSeekBar = VerticalSeekBar(this).apply {
             setMin(5)
             setMax(100)
@@ -318,13 +276,17 @@ class BoardLandscapeActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onStartTrackingTouch(seekBar: VerticalSeekBar) {}
+                override fun onStartTrackingTouch(seekBar: VerticalSeekBar) {
+                    cancelHideToolsTask()
+                }
 
                 override fun onStopTrackingTouch(seekBar: VerticalSeekBar) {
-                    // 延迟隐藏工具栏
-                    binding.root.postDelayed({
+                    cancelHideToolsTask()
+                    hideToolsRunnable = Runnable {
                         hideAllTools()
-                    }, 1500)
+                        hideToolsRunnable = null
+                    }
+                    binding.root.postDelayed(hideToolsRunnable!!, 1500)
                 }
             })
         }
@@ -335,16 +297,13 @@ class BoardLandscapeActivity : AppCompatActivity() {
         ))
     }
 
-    // 调色板布局优化 - 使用预定义的ScrollView
     private fun showColorPalette() {
         hideAllTools()
         binding.llTool.visibility = View.VISIBLE
         binding.svColorPalette.visibility = View.VISIBLE
 
-        // 清空之前的颜色
         binding.llColorContainer.removeAllViews()
 
-        // 扩展颜色列表
         val colors = listOf(
             Color.BLACK, Color.RED, Color.BLUE, Color.GREEN,
             Color.YELLOW, Color.MAGENTA, Color.CYAN, Color.GRAY,
@@ -365,6 +324,9 @@ class BoardLandscapeActivity : AppCompatActivity() {
                 }
                 background = createCircleDrawable(color)
                 setOnClickListener {
+                    // 选择颜色时取消延迟隐藏任务
+                    cancelHideToolsTask()
+
                     currentColor = color
                     drawingView.setPaintColor(color)
                     currentTool = Tool.BRUSH
@@ -506,14 +468,27 @@ class BoardLandscapeActivity : AppCompatActivity() {
     }
 
     private fun showBackConfirmDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Tip")
-            .setMessage("Save your artwork before exiting?")
-            .setPositiveButton("Quit") { _, _ ->
-                finish()
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+        // 只有在有绘制内容时才显示确认对话框
+        if (drawingView.hasDrawnContent()) {
+            AlertDialog.Builder(this)
+                .setTitle("Tip")
+                .setMessage("Save your artwork before exiting?")
+                .setPositiveButton("Save and Exit") { _, _ ->
+                    if (drawingView.hasDrawnContent()) {
+                        saveDrawingPermanently()
+                    } else {
+                        finish()
+                    }
+                }
+                .setNegativeButton("Exit without saving") { _, _ ->
+                    finish()
+                }
+                .setNeutralButton("Cancel", null)
+                .show()
+        } else {
+            // 没有绘制内容时直接退出
+            finish()
+        }
     }
 
     private fun Int.dpToPx(): Int {
@@ -522,6 +497,8 @@ class BoardLandscapeActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        // 清理延迟任务
+        cancelHideToolsTask()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 }
