@@ -1,9 +1,6 @@
 package com.completely.silent.drawingboard.main
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +20,6 @@ import com.completely.silent.drawingboard.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity(), ViewPager2Provider {
 
     private lateinit var binding: ActivityMainBinding
-    private var homeButtonCallbackId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +57,10 @@ class MainActivity : AppCompatActivity(), ViewPager2Provider {
         binding.inDialog2.tvDiss.setOnClickListener {
             binding.inDialog2.quanDialog2.isVisible = false
         }
-        homeButtonCallbackId = ReliableHomeButtonDetection.registerHomeButtonCallback {
+//        homeButtonCallbackId = ReliableHomeButtonDetection.registerHomeButtonCallback {
+//            scrollToPage(1)
+//        }
+    ReleteHome.addHomePressedListener {
             scrollToPage(1)
         }
     }
@@ -155,10 +154,8 @@ class MainActivity : AppCompatActivity(), ViewPager2Provider {
 
 
     override fun onDestroy() {
-        if (homeButtonCallbackId >= 0) {
-            ReliableHomeButtonDetection.unregisterHomeButtonCallback(homeButtonCallbackId)
-        }
         super.onDestroy()
+        ReleteHome.clearHomePressedListeners()
     }
 
     override fun getViewPager2(): ViewPager2 {
